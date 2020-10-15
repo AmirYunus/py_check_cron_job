@@ -11,6 +11,7 @@ except:
     print("Invalid expression. Please key in file name after calling program. Example: ./check_cron_job.py syslog")
 
 pattern = r"USER \((\w+)\)$"
+username_dict = {}
 
 with open(logfile) as f:
     for line in f:
@@ -19,6 +20,13 @@ with open(logfile) as f:
             continue
         
         result = re.search(pattern, line)
-        print(result[1])
+
+        if result is None:
+            continue
+
+        name = result[1]
+        username_dict[name] = username_dict.get(name, 0) + 1
+
+print(username_dict)
 
 print("\n--- Program exiting ---")
